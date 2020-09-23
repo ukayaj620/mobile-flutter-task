@@ -62,7 +62,7 @@ class SignUp extends StatelessWidget {
                               email: _inputEmail,
                               password: _inputPassword
                           );
-                          if (newUser != null) Navigator.popAndPushNamed(context, 'home');
+                          if (newUser != null) Navigator.popAndPushNamed(context, 'sign_in');
                         } catch (e){
                           print(e);
                         }
