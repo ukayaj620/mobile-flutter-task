@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "455653810349",
+    "firebase_url": "https://super-hero-jayaku.firebaseio.com",
+    "project_id": "super-hero-jayaku",
+    "storage_bucket": "super-hero-jayaku.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:455653810349:android:1b4bbc5a1ce13f90216624",
+        "android_client_info": {
+          "package_name": "com.example.superhero_jayaku"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "455653810349-4sp851l84lks0sepo2iojl0h59e7jk5l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAdcLL_zWBPoTMlpGvE-P4iK29Kpk1JK_A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "455653810349-4sp851l84lks0sepo2iojl0h59e7jk5l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
