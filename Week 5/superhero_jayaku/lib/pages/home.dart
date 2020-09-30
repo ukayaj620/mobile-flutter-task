@@ -78,7 +78,7 @@ class _HomeState extends State<Home> {
                       IconButton(
                         tooltip: 'Create Moods',
                         icon: Icon(Icons.person_add),
-                        onPressed: () {},
+                        onPressed: () => Navigator.pushNamed(context, 'create_moods'),
                         color: Colors.amber,
                       ),
                       IconButton(
