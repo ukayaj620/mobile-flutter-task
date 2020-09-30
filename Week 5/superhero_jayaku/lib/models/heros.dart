@@ -1,11 +1,11 @@
 import 'dart:convert';
 
-HeroData heroDataFromJson(String str) => HeroData.fromJson(json.decode(str));
+HeroModel heroDataFromJson(String str) => HeroModel.fromJson(json.decode(str));
 
-String heroDataToJson(HeroData data) => json.encode(data.toJson());
+String heroDataToJson(HeroModel data) => json.encode(data.toJson());
 
-class HeroData {
-  HeroData({
+class HeroModel {
+  HeroModel({
     this.response,
     this.resultsFor,
     this.results,
@@ -47,7 +47,7 @@ class Result {
   Appearance appearance;
   Work work;
   Connections connections;
-  Image image;
+  HeroImage image;
 
   factory Result.fromJson(Map<String, dynamic> json) => Result(
     id: json["id"],
@@ -57,7 +57,7 @@ class Result {
     appearance: Appearance.fromJson(json["appearance"]),
     work: Work.fromJson(json["work"]),
     connections: Connections.fromJson(json["connections"]),
-    image: Image.fromJson(json["image"]),
+    image: HeroImage.fromJson(json["image"]),
   );
 
   Map<String, dynamic> toJson() => {
@@ -168,14 +168,14 @@ class Connections {
   };
 }
 
-class Image {
-  Image({
+class HeroImage {
+  HeroImage({
     this.url,
   });
 
   String url;
 
-  factory Image.fromJson(Map<String, dynamic> json) => Image(
+  factory HeroImage.fromJson(Map<String, dynamic> json) => HeroImage(
     url: json["url"],
   );
 
