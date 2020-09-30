@@ -4,7 +4,9 @@ import 'package:superhero_jayaku/components/app_raised_button.dart';
 import 'package:superhero_jayaku/components/app_text_field.dart';
 
 class SignIn extends StatelessWidget {
-  static const String routeId = 'sign_in';
+  static const String _routeId = 'sign_in';
+
+  static String get id => _routeId;
 
   final _auth = FirebaseAuth.instance;
   String _inputEmail, _inputPassword;
