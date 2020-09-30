@@ -15,7 +15,7 @@ class HeroModel {
   String resultsFor;
   List<Result> results;
 
-  factory HeroData.fromJson(Map<String, dynamic> json) => HeroData(
+  factory HeroModel.fromJson(Map<String, dynamic> json) => HeroModel(
     response: json["response"],
     resultsFor: json["results-for"],
     results: List<Result>.from(json["results"].map((x) => Result.fromJson(x))),
