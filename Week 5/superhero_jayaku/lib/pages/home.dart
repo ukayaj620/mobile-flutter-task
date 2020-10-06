@@ -14,7 +14,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
 
   final _auth = FirebaseAuth.instance;
-  User loggedIn;
+  User _loggedIn;
   String _profileName = "John Doe";
   String _profileImageUrl = "https://www.pngkey.com/png/detail/230-2301779_best-classified-apps-default-user-profile.png";
 
@@ -28,9 +28,9 @@ class _HomeState extends State<Home> {
     User user = _auth.currentUser;
 
     if (user != null) {
-      loggedIn = user;
-      if (loggedIn.displayName != null) {
-        _profileName = loggedIn.displayName;
+      _loggedIn = user;
+      if (_loggedIn.displayName != null) {
+        _profileName = _loggedIn.displayName;
       }
     }
   }
@@ -40,7 +40,7 @@ class _HomeState extends State<Home> {
     return Scaffold(
       body: SafeArea(
         child: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 24.0),
+          margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 24.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -72,7 +72,11 @@ class _HomeState extends State<Home> {
                       AppIconButton(
                         tooltip: 'Set Profile Name',
                         icon: Icon(Icons.settings_applications),
-                        onPressed: () {},
+                        onPressed: () => Navigator.pushNamed(context, 'user_profile').whenComplete(
+                          () => setState(
+                            () => {_getUserProfile()},
+                          ),
+                        ),
                         color: Colors.blue,
                       ),
                       IconButton(
