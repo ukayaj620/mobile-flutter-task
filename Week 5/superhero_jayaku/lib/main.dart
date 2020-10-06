@@ -4,6 +4,7 @@ import 'package:superhero_jayaku/pages/create_moods.dart';
 import 'package:superhero_jayaku/pages/home.dart';
 import 'package:superhero_jayaku/pages/sign_in.dart';
 import 'package:superhero_jayaku/pages/sign_up.dart';
+import 'package:superhero_jayaku/pages/user_profile.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,6 +22,7 @@ class App extends StatelessWidget {
         SignUp.id: (context) => SignUp(),
         Home.id: (context) => Home(),
         CreateMoods.id: (context) => CreateMoods(),
+        UserProfile.id: (context) => UserProfile(),
       },
     );
   }
