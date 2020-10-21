@@ -4,6 +4,8 @@ import 'package:superhero_jayaku/components/app_hero_card.dart';
 import 'package:superhero_jayaku/components/app_text_field.dart';
 import 'package:superhero_jayaku/models/heros.dart';
 import 'package:superhero_jayaku/services/api_services.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class CreateMoods extends StatefulWidget {
   static const String _routeId = 'create_moods';
@@ -20,6 +22,11 @@ class _CreateMoodsState extends State<CreateMoods> {
   Future<HeroModel> _getSearchResult;
   String _heroName;
   String _imageUrl;
+  String _moodsHero;
+  List<int> _isSelected;
+  int _selectedIndex;
+  final _fireStoreInstance = FirebaseFirestore.instance;
+  final _auth = FirebaseAuth.instance;
 
   @override
   void initState() {
@@ -67,6 +74,7 @@ class _CreateMoodsState extends State<CreateMoods> {
                       case ConnectionState.waiting:
                         return Center(child: CircularProgressIndicator());
                       default:
+                        _isSelected = List.filled(snapshot.data.results.length, 0);
                         return !snapshot.hasData
                             ? Text('No Data Found')
                             : _listOfContent(context, snapshot.data);
@@ -90,20 +98,26 @@ class _CreateMoodsState extends State<CreateMoods> {
             ),
           ),
           title: AppTextField(
-            hint: 'Search Hero',
+            hint: 'Input Moods',
             secure: false,
             inputType: TextInputType.text,
-            onChanged: (hero) {
-              _searchHero = hero;
-              setState(() {
-                _getSearchResult = APIServices().getSearchResult(_searchHero);
-              });
+            onChanged: (mood) {
+              _moodsHero = mood;
             },
           ),
           trailing: IconButton(
             icon: Icon(Icons.send),
-            onPressed: () {
-              
+            onPressed: () async {
+              User loggedIn = _auth.currentUser;
+              await _fireStoreInstance.collection('moods').doc(loggedIn.email).set({
+                'nameHero': _heroName,
+                'urlHero': _imageUrl,
+                'moodsText': _moodsHero,
+              }).then((value) =>
+                print('${loggedIn.displayName} insert Hero Moods successfully')
+              ).catchError((error) =>
+                print(error)
+              );
             },
           ),
         ),
@@ -112,15 +126,27 @@ class _CreateMoodsState extends State<CreateMoods> {
   }
 
   Widget _listOfContent(BuildContext context, data) {
-    print(data);
+    print(_isSelected);
+
+    if (_selectedIndex != null)
+      _isSelected[_selectedIndex] = 1;
+
+    print(_heroName);
+    print(_imageUrl);
+    print(_selectedIndex);
     return ListView.builder(
       itemBuilder: (BuildContext context, int index) => HeroCard(
         imageUrl: data.results[index].image.url,
         heroName: data.results[index].name.toString(),
-        getData: (String heroName, String imageUrl) {
-          _heroName = heroName;
-          _imageUrl = imageUrl;
+        index: index,
+        getData: (String heroName, String imageUrl, int index) {
+          setState(() {
+            _heroName = heroName;
+            _imageUrl = imageUrl;
+            _selectedIndex = index;
+          });
         },
+        borderColor: _isSelected[index] == 1 ? Colors.blueAccent : Colors.transparent,
       ),
       itemCount: data.results.length,
     );
