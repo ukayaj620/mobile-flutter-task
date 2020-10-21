@@ -1,11 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:superhero_jayaku/components/app_hero_card.dart';
 import 'package:superhero_jayaku/components/app_text_field.dart';
 import 'package:superhero_jayaku/models/heros.dart';
 import 'package:superhero_jayaku/services/api_services.dart';
-import 'dart:convert';
 
 class CreateMoods extends StatefulWidget {
   static const String _routeId = 'create_moods';
@@ -20,6 +18,8 @@ class _CreateMoodsState extends State<CreateMoods> {
 
   String _searchHero;
   Future<HeroModel> _getSearchResult;
+  String _heroName;
+  String _imageUrl;
 
   @override
   void initState() {
@@ -61,7 +61,7 @@ class _CreateMoodsState extends State<CreateMoods> {
               ),
               Expanded(
                 child: FutureBuilder(
-                  future: APIServices().getSearchResult(_searchHero),
+                  future: _getSearchResult,
                   builder: (context, AsyncSnapshot<HeroModel> snapshot) {
                     switch (snapshot.connectionState) {
                       case ConnectionState.waiting:
@@ -76,8 +76,38 @@ class _CreateMoodsState extends State<CreateMoods> {
               ),
             ],
           ),
-        )
-      )
+        ),
+      ),
+      bottomSheet: Card(
+        child: ListTile(
+          leading: Text(
+            'Moods',
+            textAlign: TextAlign.justify,
+            style: TextStyle(
+              fontFamily: 'Quicksand',
+              fontSize: 16.0,
+              fontWeight: FontWeight.w900,
+            ),
+          ),
+          title: AppTextField(
+            hint: 'Search Hero',
+            secure: false,
+            inputType: TextInputType.text,
+            onChanged: (hero) {
+              _searchHero = hero;
+              setState(() {
+                _getSearchResult = APIServices().getSearchResult(_searchHero);
+              });
+            },
+          ),
+          trailing: IconButton(
+            icon: Icon(Icons.send),
+            onPressed: () {
+              
+            },
+          ),
+        ),
+      ),
     );
   }
 
@@ -87,6 +117,10 @@ class _CreateMoodsState extends State<CreateMoods> {
       itemBuilder: (BuildContext context, int index) => HeroCard(
         imageUrl: data.results[index].image.url,
         heroName: data.results[index].name.toString(),
+        getData: (String heroName, String imageUrl) {
+          _heroName = heroName;
+          _imageUrl = imageUrl;
+        },
       ),
       itemCount: data.results.length,
     );

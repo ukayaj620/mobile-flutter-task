@@ -5,17 +5,23 @@ class HeroCard extends StatelessWidget {
   HeroCard({
     this.imageUrl,
     this.heroName,
+    this.getData,
   });
 
   final String imageUrl;
   final String heroName;
+  final Function getData;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => print('Hello'),
+      onTap: () {
+        FocusScope.of(context).unfocus();
+        getData(this.heroName, this.imageUrl);
+      },
       child: Container(
         margin: EdgeInsets.symmetric(vertical: 16.0, horizontal: 24.0),
+        padding: EdgeInsets.symmetric(vertical: 12.0),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.all(Radius.circular(12.0)),
