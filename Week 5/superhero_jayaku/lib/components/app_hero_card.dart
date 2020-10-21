@@ -15,7 +15,6 @@ class HeroCard extends StatelessWidget {
     return InkWell(
       onTap: () => print('Hello'),
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 16.0),
         margin: EdgeInsets.symmetric(vertical: 16.0, horizontal: 24.0),
         decoration: BoxDecoration(
           color: Colors.white,
