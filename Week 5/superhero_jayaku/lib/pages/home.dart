@@ -24,13 +24,15 @@ class _HomeState extends State<Home> {
     _getUserProfile();
   }
 
-  void _getUserProfile() {
+  void _getUserProfile() async {
     User user = _auth.currentUser;
 
     if (user != null) {
       _loggedIn = user;
       if (_loggedIn.displayName != null) {
         _profileName = _loggedIn.displayName;
+      } else {
+        await _loggedIn.updateProfile(displayName: _profileName);
       }
     }
   }
