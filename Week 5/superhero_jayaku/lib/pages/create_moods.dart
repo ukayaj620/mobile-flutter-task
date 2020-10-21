@@ -2,7 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:superhero_jayaku/components/app_hero_card.dart';
+import 'package:superhero_jayaku/components/app_text_field.dart';
 import 'package:superhero_jayaku/models/heros.dart';
+import 'package:superhero_jayaku/services/api_services.dart';
 import 'dart:convert';
 
 class CreateMoods extends StatefulWidget {
@@ -16,16 +18,8 @@ class CreateMoods extends StatefulWidget {
 
 class _CreateMoodsState extends State<CreateMoods> {
 
-  Future<HeroModel> _bootstrapAsync() async {
-    http.Response response = await http.get('https://www.superheroapi.com/api.php/3142788385831459/search/batman');
-    if (response.statusCode == 200) {
-      Map json = jsonDecode(response.body);
-      HeroModel heroData = HeroModel.fromJson(json);
-      return heroData;
-    } else {
-      throw Exception('Failed to load album');
-    }
-  }
+  String _searchHero;
+  Future<HeroModel> _getSearchResult;
 
   @override
   void initState() {
@@ -36,25 +30,65 @@ class _CreateMoodsState extends State<CreateMoods> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Center(
-          child: FutureBuilder(
-            future: _bootstrapAsync(),
-            builder: (context, AsyncSnapshot<HeroModel> snapshot) {
-              if (snapshot.hasData) {
-                return ListView.builder(
-                  itemBuilder: (BuildContext context, int index) => HeroCard(
-                    imageUrl: snapshot.data.results[index].image.url,
-                    heroName: snapshot.data.results[index].name.toString(),
-                  ),
-                  itemCount: snapshot.data.results.length,
-                );
-              } else {
-                return CircularProgressIndicator();
-              }
-            }
+        child: Container(
+          margin: EdgeInsets.fromLTRB(0, 24.0, 0, 0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                'Search The Hero',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontFamily: 'Quicksand',
+                  fontSize: 28.0,
+                  fontWeight: FontWeight.w900,
+                ),
+              ),
+              SizedBox(height: 24.0),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 24.0),
+                child: AppTextField(
+                  hint: 'Search Hero',
+                  secure: false,
+                  inputType: TextInputType.text,
+                  onChanged: (hero) {
+                    _searchHero = hero;
+                    setState(() {
+                      _getSearchResult = APIServices().getSearchResult(_searchHero);
+                    });
+                  },
+                ),
+              ),
+              Expanded(
+                child: FutureBuilder(
+                  future: APIServices().getSearchResult(_searchHero),
+                  builder: (context, AsyncSnapshot<HeroModel> snapshot) {
+                    switch (snapshot.connectionState) {
+                      case ConnectionState.waiting:
+                        return Center(child: CircularProgressIndicator());
+                      default:
+                        return !snapshot.hasData
+                            ? Text('No Data Found')
+                            : _listOfContent(context, snapshot.data);
+                    }
+                  }
+                ),
+              ),
+            ],
           ),
-        ),
+        )
       )
+    );
+  }
+
+  Widget _listOfContent(BuildContext context, data) {
+    print(data);
+    return ListView.builder(
+      itemBuilder: (BuildContext context, int index) => HeroCard(
+        imageUrl: data.results[index].image.url,
+        heroName: data.results[index].name.toString(),
+      ),
+      itemCount: data.results.length,
     );
   }
 }
