@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:news_app/screens/home.dart';
 import 'package:news_app/screens/login.dart';
 
 void main() {
@@ -18,6 +19,7 @@ class App extends StatelessWidget {
       initialRoute: LoginScreen.id,
       routes: {
         LoginScreen.id: (context) => LoginScreen(),
+        HomeScreen.id: (context) => HomeScreen(),
       },
     );
   }
