@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:news_app/screens/home.dart';
 import 'package:news_app/screens/login.dart';
+import 'package:news_app/screens/register.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,10 +17,11 @@ class App extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'News',
-      initialRoute: LoginScreen.id,
+      initialRoute: RegisterScreen.id,
       routes: {
         LoginScreen.id: (context) => LoginScreen(),
         HomeScreen.id: (context) => HomeScreen(),
+        RegisterScreen.id: (context) => RegisterScreen(),
       },
     );
   }
