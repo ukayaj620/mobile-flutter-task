@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:news_app/components/app_text_form_field.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:news_app/screens/home.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -37,6 +38,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
     final data = jsonDecode(response.body);
     if (data['value'] == 1) {
+      _store(data['username'], data['email']);
       Navigator.pushNamed(context, HomeScreen.id);
     } else {
       _scaffoldKey.currentState.showSnackBar(
@@ -46,7 +48,12 @@ class _LoginScreenState extends State<LoginScreen> {
         )
       );
     }
-    print(data);
+  }
+
+  void _store(String username, String email) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('username', username);
+    await prefs.setString('email', email);
   }
 
   @override
@@ -73,11 +80,15 @@ class _LoginScreenState extends State<LoginScreen> {
                         onSaved: (value) => _email = value,
                         inputType: TextInputType.emailAddress,
                         secure: false,
+                        hint: "Email",
+                        label: "Email",
                       ),
                       AppTextFormField(
                         onSaved: (value) => _password = value,
                         inputType: TextInputType.text,
                         secure: true,
+                        hint: "Password",
+                        label: "Password",
                       ),
                     ],
                   ),
