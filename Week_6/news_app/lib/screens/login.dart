@@ -1,7 +1,9 @@
 import 'dart:convert';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:news_app/components/app_text_form_field.dart';
 import 'package:http/http.dart' as http;
+import 'package:news_app/screens/register.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:news_app/screens/home.dart';
 
@@ -97,12 +99,37 @@ class _LoginScreenState extends State<LoginScreen> {
               Container(
                 width: MediaQuery.of(context).size.width,
                 padding: EdgeInsets.symmetric(horizontal: 24.0),
+                margin: EdgeInsets.fromLTRB(0, 0, 0, 24.0),
                 child: RaisedButton(
                   padding: EdgeInsets.symmetric(vertical: 16.0),
                   onPressed: () => _validateForm(),
                   textColor: Colors.white,
                   color: Colors.black87,
                   child: Text("LOGIN"),
+                ),
+              ),
+              RichText(
+                text: TextSpan(
+                  children: <TextSpan>[
+                    TextSpan(
+                      text: 'Don\'t have account? ',
+                      style: TextStyle(
+                        fontFamily: 'Roboto',
+                        fontSize: 16.0,
+                        color: Colors.black87
+                      ),
+                    ),
+                    TextSpan(
+                      text: 'Sign Up',
+                      recognizer: TapGestureRecognizer()..onTap = () => Navigator.pushNamed(context, RegisterScreen.id),
+                      style: TextStyle(
+                        fontFamily: 'Roboto',
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black87
+                      ),
+                    )
+                  ]
                 ),
               )
             ],
