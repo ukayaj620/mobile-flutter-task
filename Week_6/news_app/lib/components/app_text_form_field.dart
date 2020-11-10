@@ -4,12 +4,14 @@ class AppTextFormField extends StatelessWidget {
   AppTextFormField({
     @required this.hint,
     @required this.inputType,
+    @required this.label,
     @required this.secure,
     @required this.onSaved,
   });
 
   final String hint;
   final TextInputType inputType;
+  final String label;
   final bool secure;
   final ValueSetter<String> onSaved;
 
@@ -25,7 +27,7 @@ class AppTextFormField extends StatelessWidget {
         keyboardType: this.inputType,
         style: _textStyle,
         decoration: InputDecoration(
-          labelText: 'Label text',
+          labelText: this.label,
           hintText: this.hint,
           border: OutlineInputBorder(),
         ),
