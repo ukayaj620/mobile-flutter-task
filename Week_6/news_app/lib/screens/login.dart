@@ -40,7 +40,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
     final data = jsonDecode(response.body);
     if (data['value'] == 1) {
-      _store(data['username'], data['email']);
+      _store(data['username'], data['email'], data['userId']);
       Navigator.pushNamed(context, HomeScreen.id);
     } else {
       _scaffoldKey.currentState.showSnackBar(
@@ -52,10 +52,11 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  void _store(String username, String email) async {
+  void _store(String username, String email, String userId) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('username', username);
     await prefs.setString('email', email);
+    await prefs.setString('userId', userId);
   }
 
   @override
