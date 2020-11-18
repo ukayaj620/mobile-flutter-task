@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:news_app/components/app_text_form_field.dart';
 import 'package:http/http.dart' as http;
 import 'package:news_app/screens/login.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:news_app/screens/home.dart';
 
 class RegisterScreen extends StatefulWidget {
   RegisterScreen({ Key key }): super(key: key);
@@ -32,12 +30,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   void _register() async {
     final response = await http.post(
-        'https://flutternewsapi.000webhostapp.com/register.php',
-        body: {
-          'username': _username,
-          'email': _email,
-          'password': _password,
-        }
+      'https://flutternewsapi.000webhostapp.com/register.php',
+      body: {
+        'username': _username,
+        'email': _email,
+        'password': _password,
+      }
     );
     final data = jsonDecode(response.body);
     if (data['value'] == 1) {
@@ -49,12 +47,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
         duration: Duration(seconds: 3),
       )
     );
-  }
-
-  void _store(String username, String email) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('username', username);
-    await prefs.setString('email', email);
   }
 
   @override
