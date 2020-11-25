@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:news_app/screens/add_news.dart';
 import 'package:news_app/screens/home.dart';
 import 'package:news_app/screens/login.dart';
 import 'package:news_app/screens/register.dart';
@@ -22,6 +23,7 @@ class App extends StatelessWidget {
         LoginScreen.id: (context) => LoginScreen(),
         HomeScreen.id: (context) => HomeScreen(),
         RegisterScreen.id: (context) => RegisterScreen(),
+        AddNewsScreen.id: (context) => AddNewsScreen(),
       },
     );
   }
