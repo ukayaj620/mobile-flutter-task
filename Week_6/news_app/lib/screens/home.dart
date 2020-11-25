@@ -23,6 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       _username = prefs.getString('username');
+      print(prefs.getString('userId'));
     });
   }
 
@@ -32,31 +33,66 @@ class _HomeScreenState extends State<HomeScreen> {
     Navigator.pushNamed(context, LoginScreen.id);
   }
 
-  static const TextStyle _textStyle = TextStyle(fontFamily: 'Roboto', fontSize: 36.0);
+  static const TextStyle _textStyle = TextStyle(fontFamily: 'Roboto', fontSize: 24.0);
 
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text(
-                "Welcome " + _username,
-                textAlign: TextAlign.center,
-                style: _textStyle,
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          title: Image.asset(
+            'assets/newsfone.png',
+            width: MediaQuery.of(context).size.width * 0.3,
+          ),
+          actions: [
+            IconButton(
+              icon: Icon(Icons.backspace),
+              onPressed: () {
+                _signOut();
+                Navigator.pushNamed(context, "login");
+              },
+            )
+          ],
+        ),
+        body: SafeArea(
+          child: Center(
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 24.0),
+              child: Column(
+                children: <Widget>[
+                  Container(
+                    margin: EdgeInsets.symmetric(vertical: 8.0),
+                    width: MediaQuery.of(context).size.width,
+                    padding: EdgeInsets.all(4.0),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black26,
+                          offset: Offset(0, 2),
+                          spreadRadius: 0,
+                          blurRadius: 4, // changes position of shadow
+                        ),
+                      ],
+                    ),
+                    child: Text(
+                      "Welcome " + _username,
+                      textAlign: TextAlign.center,
+                      style: _textStyle,
+                    ),
+                  ),
+                ],
               ),
-              Container(
-                margin: EdgeInsets.fromLTRB(0, 24.0, 0, 0),
-                child: RaisedButton(
-                  padding: EdgeInsets.symmetric(vertical: 16.0),
-                  textColor: Colors.white,
-                  color: Colors.black87,
-                  child: Text("SIGN OUT"),
-                  onPressed: () => _signOut(),
-                ),
-              ),
-            ],
+            ),
+          ),
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () => Navigator.pushNamed(context, 'add_news'),
+          child: Icon(
+            Icons.add,
+            color: Colors.white,
           ),
         ),
       ),
