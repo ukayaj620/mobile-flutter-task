@@ -40,7 +40,8 @@ class _LoginScreenState extends State<LoginScreen> {
     );
     final data = jsonDecode(response.body);
     if (data['value'] == 1) {
-      _store(data['username'], data['email'], data['userId']);
+      print(data);
+      _store(data['username'], data['email'], data['id']);
       Navigator.pushNamed(context, HomeScreen.id);
     } else {
       _scaffoldKey.currentState.showSnackBar(
